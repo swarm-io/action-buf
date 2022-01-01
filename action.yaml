@@ -91,7 +91,7 @@ runs:
     - name: Login to BSR
       shell: bash
       run: |
-        echo ${BUF_TOKEN} | buf registry login --username ${BUF_USER} --token-stdin
+        echo ${{ inputs.buf-token }} | buf registry login --username ${{ inputs.buf-user }} --token-stdin
     - name: Run buf lint
       if: inputs.lint
       shell: bash
