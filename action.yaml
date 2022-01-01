@@ -1,20 +1,20 @@
 name: 'Action Buf'
 description: 'Runs buf commmands to lint and generate protos'
 inputs:
-  token:
-    description: 'Git token to use'
-    required: false
-    default: github.token
-  ref:
-    description: 'Ref to checkout'
-    required: false
-    default: github.ref
   buf-user:
     description: 'Buf user'
     required: true
   buf-token:
     description: 'Buf token'
     required: true
+  token:
+    description: 'Git token to use'
+    required: false
+    default: ${{ github.token }}
+  ref:
+    description: 'Ref to checkout'
+    required: false
+    default: ${{ github.ref }}
   breaking-ref:
     description: 'Ref to compare to if running `buf breaking`'
     required: false
