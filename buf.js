@@ -14,7 +14,7 @@ fs.readdir('.', (err, files) => {
             if (stats.isDirectory() && file.endsWith('apis')) {
                 let cmd
                 if (bufCommand.includes('repository create')) {
-                    cmd = `buf ${bufCommand}/${file} || true`
+                    cmd = `buf ${bufCommand}/${file} --visibility private || true`
                 } else {
                     cmd = `cd ${workingDirectory}/${file} && buf ${bufCommand}`
                 }
