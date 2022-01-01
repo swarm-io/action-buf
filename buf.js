@@ -12,10 +12,11 @@ fs.readdir('.', (err, files) => {
     files.forEach(file => {
         fs.stat(file, (err, stats) => {
             if (stats.isDirectory() && file.endsWith('apis')) {
+                let cmd
                 if (bufCommand.includes('repository create')) {
-                    const cmd = `buf ${bufCommand}/${file} || true`
+                    cmd = `buf ${bufCommand}/${file} || true`
                 } else {
-                    const cmd = `cd ${workingDirectory}/${file} && buf ${bufCommand}`
+                    cmd = `cd ${workingDirectory}/${file} && buf ${bufCommand}`
                 }
                 runCommand(cmd)
             }
