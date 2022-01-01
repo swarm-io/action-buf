@@ -1,21 +1,126 @@
-name: 'Hello World' # taken from https://docs.github.com/en/actions/creating-actions/creating-a-composite-action
-description: 'Greet someone'
+name: 'Action Buf'
+description: 'Runs buf commmands to lint and generate protos'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  token:
+    description: 'Git token to use'
+    required: false
+    default: github.token
+  ref:
+    description: 'Ref to checkout'
+    required: false
+    default: github.ref
+  buf-user:
+    description: 'Buf user'
     required: true
-    default: 'World'
-outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-id }}
+  buf-token:
+    description: 'Buf token'
+    required: true
+  breaking-ref:
+    description: 'Ref to compare to if running `buf breaking`'
+    required: false
+    default: main
+  lint:
+    description: 'Run `buf lint`'
+    required: false
+    default: true
+  generate:
+    description: 'Run `buf generate`'
+    required: false
+    default: true
+  breaking:
+    description: 'Run `buf breaking`'
+    required: false
+    default: true
+  mod-prune:
+    description: 'Run `buf mod prune`'
+    required: false
+    default: true
+  mod-update:
+    description: 'Run `buf mod update`'
+    required: false
+    default: true
+  push:
+    description: 'Run `buf push`'
+    required: false
+    default: true
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        token: ${{ inputs.token }}
+        ref: ${{ inputs.ref }}
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        token: ${{ inputs.token }}
+        ref: ${{ inputs.breakingRef }}
+        path: against
+    - name: Configure git
+      uses: fregante/setup-git-user@v1
+    - name: Setup Cache
+      uses: actions/cache@v2
+      with:
+        # In order:
+        # * Module download cache
+        # * Build cache (Linux)
+        path: |
+          ~/go/pkg/mod
+          ~/.cache/go-build
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    - name: Setup buf
+      uses: bufbuild/buf-setup-action@v0.6.0
+      with:
+        github_token: ${{ github.token }}
+    - name: Install Protoc
+      uses: arduino/setup-protoc@v1
+      with:
+        repo-token: ${{ github.token }}
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17.x
+    - name: Install Go dependencies
       shell: bash
-    - id: random-number-generator
-      run: echo "::set-output name=random-id::$(echo $RANDOM)"
+      run: |
+        go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+        go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+    - name: Login to BSR
       shell: bash
-    - run: ${{ github.action_path }}/goodbye.sh
+      run: |
+        echo ${BUF_TOKEN} | buf registry login --username ${BUF_USER} --token-stdin
+    - name: Run buf lint
+      if: inputs.lint
       shell: bash
+      run: |
+        buf lint
+    - name: Run buf breaking
+      if: inputs.breaking
+      shell: bash
+      run: |
+        buf breaking --against ./against
+        rm -rf ./against
+    - name: Run buf mod prune
+      if: inputs.mod-prune
+      shell: bash
+      run: |
+        node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='mod prune'
+    - name: Run buf mod update
+      if: inputs.mod-update
+      shell: bash
+      run: |
+        node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='mod update'
+    - name: Run buf generate
+      if: inputs.generate
+      shell: bash
+      run: |
+        buf generate
+    - name: Run buf push
+      if: inputs.push
+      shell: bash
+      run: |
+        node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='beta registry repository create buf.build/${{ inputs.buf-user }}'
+        node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='push'
