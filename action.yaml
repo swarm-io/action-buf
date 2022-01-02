@@ -51,6 +51,7 @@ runs:
       with:
         token: ${{ inputs.token }}
         ref: ${{ inputs.ref }}
+        path: protos
     - name: Checkout
       uses: actions/checkout@v2
       with:
@@ -95,34 +96,41 @@ runs:
     - name: Run buf lint
       if: inputs.lint
       shell: bash
+      working-directory: protos
       run: |
         buf lint
     - name: Run buf mod prune
+      working-directory: protos
       if: inputs.mod-prune
       shell: bash
       run: |
         node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='mod prune'
     - name: Run buf mod update
+      working-directory: protos
       if: inputs.mod-update
       shell: bash
       run: |
         node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='mod update'
     - name: Run buf generate
+      working-directory: protos
       if: inputs.generate
       shell: bash
       run: |
         buf generate
     - name: Commit generated protos
+      working-directory: protos
       if: inputs.generate
       uses: stefanzweifel/git-auto-commit-action@v4
     - name: Run buf push
+      working-directory: protos
       if: inputs.push
       shell: bash
       run: |
         node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='beta registry repository create buf.build/${{ inputs.buf-user }}'
         node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='push'
     - name: Run buf breaking
+      working-directory: protos
       if: inputs.breaking
       shell: bash
       run: |
-        buf breaking --against ./against
+        buf breaking --against ../against
