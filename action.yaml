@@ -42,7 +42,7 @@ inputs:
   push:
     description: 'Run `buf push`'
     required: false
-    default: true
+    default: false
 runs:
   using: "composite"
   steps:
@@ -97,12 +97,6 @@ runs:
       shell: bash
       run: |
         buf lint
-    - name: Run buf breaking
-      if: inputs.breaking
-      shell: bash
-      run: |
-        buf breaking --against ./against
-        rm -rf ./against
     - name: Run buf mod prune
       if: inputs.mod-prune
       shell: bash
@@ -127,3 +121,8 @@ runs:
       run: |
         node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='beta registry repository create buf.build/${{ inputs.buf-user }}'
         node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='push'
+    - name: Run buf breaking
+      if: inputs.breaking
+      shell: bash
+      run: |
+        buf breaking --against ./against
