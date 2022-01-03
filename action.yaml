@@ -83,31 +83,31 @@ runs:
       if: inputs.lint == 'true'
       uses: bufbuild/buf-lint-action@v1
     - name: Run buf mod prune
-      if: inputs.mod-prune == true
+      if: inputs.mod-prune == 'true'
       shell: bash
       run: |
         node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='mod prune'
     - name: Run buf mod update
-      if: inputs.mod-update == true
+      if: inputs.mod-update == 'true'
       shell: bash
       run: |
         node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='mod update'
     - name: Run buf generate
-      if: inputs.generate == true
+      if: inputs.generate == 'true'
       shell: bash
       run: |
         buf generate
     - name: Commit generated protos
-      if: inputs.generate == true
+      if: inputs.generate == 'true'
       uses: stefanzweifel/git-auto-commit-action@v4
     - name: Run buf push
-      if: inputs.push == true
+      if: inputs.push == 'true'
       uses: bufbuild/buf-push-action@v1
       with:
         buf_token: ${{ inputs.buf-token }}
         input: ${{ inputs.push-dir }}
     - name: Run buf breaking
-      if: inputs.breaking == true
+      if: inputs.breaking == 'true'
       uses: bufbuild/buf-breaking-action@v1
       with:
         against: 'https://github.com/${GITHUB_REPOSITORY}.git#branch=main'
