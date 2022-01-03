@@ -15,7 +15,7 @@ inputs:
   ref:
     description: 'Ref to checkout'
     required: false
-    default: ${{ github.ref }}
+    default: ${{ github.head_ref }}
   lint:
     description: 'Run `buf lint`'
     required: false
