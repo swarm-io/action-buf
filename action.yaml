@@ -8,6 +8,10 @@ inputs:
     description: 'Git token to use'
     required: false
     default: ${{ github.token }}
+  push-dir:
+    description: 'Subdirectory to use with buf push'
+    required: false
+    default: '.'
   ref:
     description: 'Ref to checkout'
     required: false
@@ -106,3 +110,4 @@ runs:
       uses: bufbuild/buf-push-action@v1
       with:
         buf_token: ${{ inputs.buf-token }}
+        input: ${{ inputs.push_dir }}
