@@ -110,4 +110,4 @@ runs:
       uses: bufbuild/buf-push-action@v1
       with:
         buf_token: ${{ inputs.buf-token }}
-        input: ${{ inputs.push_dir }}
+        input: ${{ inputs.push-dir }}
