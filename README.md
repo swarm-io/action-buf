@@ -69,7 +69,7 @@ Runs buf commmands to lint and generate protos
 | **`breaking`**   | Run `buf breaking`                |          `true`          |  **false**   |
 | **`mod-prune`**  | Run `buf mod prune`               |          `true`          |  **false**   |
 | **`mod-update`** | Run `buf mod update`              |          `true`          |  **false**   |
-| **`push`**       | Run `buf push`                    |                          |  **false**   |
+| **`push`**       | Run `buf push`                    |         `false`          |  **false**   |
 
 <!-- end inputs -->
 <!-- start outputs -->

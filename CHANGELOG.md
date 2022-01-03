@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/swarm-io/action-buf/compare/v1.0.1...v1.0.2) (2022-01-03)
+
+
+### Bug Fixes
+
+* Fixed inputs ([#3](https://github.com/swarm-io/action-buf/issues/3)) ([1e793b0](https://github.com/swarm-io/action-buf/commit/1e793b0ea36ad013c73404d64b8f06b9d2caf33e))
+
 ## [1.0.1](https://github.com/swarm-io/action-buf/compare/v1.0.0...v1.0.1) (2022-01-03)
 
 
