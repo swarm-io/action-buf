@@ -15,9 +15,6 @@ Runs buf commmands to lint and generate protos
 ```yaml
 - uses: swarm-io/action-buf@undefined
   with:
-    # Buf user
-    buf-user: ""
-
     # Buf token
     buf-token: ""
 
@@ -25,13 +22,13 @@ Runs buf commmands to lint and generate protos
     # Default: ${{ github.token }}
     token: ""
 
-    # Ref to checkout
-    # Default: ${{ github.ref }}
-    ref: ""
+    # Subdirectory to use with buf push
+    # Default: .
+    push-dir: ""
 
-    # Ref to compare to if running `buf breaking`
-    # Default: main
-    breaking-ref: ""
+    # Ref to checkout
+    # Default: ${{ github.head_ref }}
+    ref: ""
 
     # Run `buf lint`
     # Default: true
@@ -61,19 +58,18 @@ Runs buf commmands to lint and generate protos
 <!-- end usage -->
 <!-- start inputs -->
 
-| **Input**          | **Description**                             |      **Default**      | **Required** |
-| :----------------- | :------------------------------------------ | :-------------------: | :----------: |
-| **`buf-user`**     | Buf user                                    |                       |   **true**   |
-| **`buf-token`**    | Buf token                                   |                       |   **true**   |
-| **`token`**        | Git token to use                            | `${{ github.token }}` |  **false**   |
-| **`ref`**          | Ref to checkout                             |  `${{ github.ref }}`  |  **false**   |
-| **`breaking-ref`** | Ref to compare to if running `buf breaking` |        `main`         |  **false**   |
-| **`lint`**         | Run `buf lint`                              |        `true`         |  **false**   |
-| **`generate`**     | Run `buf generate`                          |        `true`         |  **false**   |
-| **`breaking`**     | Run `buf breaking`                          |        `true`         |  **false**   |
-| **`mod-prune`**    | Run `buf mod prune`                         |        `true`         |  **false**   |
-| **`mod-update`**   | Run `buf mod update`                        |        `true`         |  **false**   |
-| **`push`**         | Run `buf push`                              |                       |  **false**   |
+| **Input**        | **Description**                   |       **Default**        | **Required** |
+| :--------------- | :-------------------------------- | :----------------------: | :----------: |
+| **`buf-token`**  | Buf token                         |                          |   **true**   |
+| **`token`**      | Git token to use                  |  `${{ github.token }}`   |  **false**   |
+| **`push-dir`**   | Subdirectory to use with buf push |           `.`            |  **false**   |
+| **`ref`**        | Ref to checkout                   | `${{ github.head_ref }}` |  **false**   |
+| **`lint`**       | Run `buf lint`                    |          `true`          |  **false**   |
+| **`generate`**   | Run `buf generate`                |          `true`          |  **false**   |
+| **`breaking`**   | Run `buf breaking`                |          `true`          |  **false**   |
+| **`mod-prune`**  | Run `buf mod prune`               |          `true`          |  **false**   |
+| **`mod-update`** | Run `buf mod update`              |          `true`          |  **false**   |
+| **`push`**       | Run `buf push`                    |                          |  **false**   |
 
 <!-- end inputs -->
 <!-- start outputs -->

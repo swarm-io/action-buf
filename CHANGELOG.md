@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/swarm-io/action-buf/compare/v1.0.0...v1.0.1) (2022-01-03)
+
+
+### Bug Fixes
+
+* Use buf actions where possible, do buf-breaking last, don't checkout for buf-breaking ([#2](https://github.com/swarm-io/action-buf/issues/2)) ([b925722](https://github.com/swarm-io/action-buf/commit/b9257224e552a312fc06de766e16cf143289bfd3))
+
 # 1.0.0 (2022-01-02)
 
 
