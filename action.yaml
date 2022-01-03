@@ -100,14 +100,14 @@ runs:
     - name: Commit generated protos
       if: inputs.generate
       uses: stefanzweifel/git-auto-commit-action@v4
-    - name: Run buf breaking
-      if: inputs.breaking
-      uses: bufbuild/buf-breaking-action@v1
-      with:
-        against: 'https://github.com/${GITHUB_REPOSITORY}.git#branch=main'
     - name: Run buf push
       if: inputs.push
       uses: bufbuild/buf-push-action@v1
       with:
         buf_token: ${{ inputs.buf-token }}
         input: ${{ inputs.push-dir }}
+    - name: Run buf breaking
+      if: inputs.breaking
+      uses: bufbuild/buf-breaking-action@v1
+      with:
+        against: 'https://github.com/${GITHUB_REPOSITORY}.git#branch=main'
