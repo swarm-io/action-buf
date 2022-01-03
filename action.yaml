@@ -19,27 +19,27 @@ inputs:
   lint:
     description: 'Run `buf lint`'
     required: false
-    default: true
+    default: 'true'
   generate:
     description: 'Run `buf generate`'
     required: false
-    default: true
+    default: 'true'
   breaking:
     description: 'Run `buf breaking`'
     required: false
-    default: true
+    default: 'true'
   mod-prune:
     description: 'Run `buf mod prune`'
     required: false
-    default: true
+    default: 'true'
   mod-update:
     description: 'Run `buf mod update`'
     required: false
-    default: true
+    default: 'true'
   push:
     description: 'Run `buf push`'
     required: false
-    default: false
+    default: 'false'
 runs:
   using: "composite"
   steps:
@@ -80,34 +80,34 @@ runs:
         go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
         go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
     - name: Run buf lint
-      if: inputs.lint
+      if: inputs.lint == 'true'
       uses: bufbuild/buf-lint-action@v1
     - name: Run buf mod prune
-      if: inputs.mod-prune
+      if: inputs.mod-prune == 'true'
       shell: bash
       run: |
         node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='mod prune'
     - name: Run buf mod update
-      if: inputs.mod-update
+      if: inputs.mod-update == 'true'
       shell: bash
       run: |
         node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='mod update'
     - name: Run buf generate
-      if: inputs.generate
+      if: inputs.generate == 'true'
       shell: bash
       run: |
         buf generate
     - name: Commit generated protos
-      if: inputs.generate
+      if: inputs.generate == 'true'
       uses: stefanzweifel/git-auto-commit-action@v4
     - name: Run buf push
-      if: inputs.push
+      if: inputs.push == 'true'
       uses: bufbuild/buf-push-action@v1
       with:
         buf_token: ${{ inputs.buf-token }}
         input: ${{ inputs.push-dir }}
     - name: Run buf breaking
-      if: inputs.breaking
+      if: inputs.breaking == 'true'
       uses: bufbuild/buf-breaking-action@v1
       with:
         against: 'https://github.com/${GITHUB_REPOSITORY}.git#branch=main'
