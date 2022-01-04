@@ -15,6 +15,9 @@ Runs buf commmands to lint and generate protos
 ```yaml
 - uses: swarm-io/action-buf@undefined
   with:
+    # Buf user
+    buf-user: ""
+
     # Buf token
     buf-token: ""
 
@@ -60,6 +63,7 @@ Runs buf commmands to lint and generate protos
 
 | **Input**        | **Description**                   |       **Default**        | **Required** |
 | :--------------- | :-------------------------------- | :----------------------: | :----------: |
+| **`buf-user`**   | Buf user                          |                          |   **true**   |
 | **`buf-token`**  | Buf token                         |                          |   **true**   |
 | **`token`**      | Git token to use                  |  `${{ github.token }}`   |  **false**   |
 | **`push-dir`**   | Subdirectory to use with buf push |           `.`            |  **false**   |
