@@ -107,6 +107,11 @@ runs:
     - name: Commit generated protos
       if: inputs.generate == 'true'
       uses: stefanzweifel/git-auto-commit-action@v4
+    - name: Create BSR repo
+      if: inputs.push == 'true'
+      shell: bash
+      run: |
+        node ${{ github.action_path }}/buf.js --workingDirectory='${{ github.workspace }}' --bufCommand='beta registry repository create buf.build/${{ inputs.buf-user }}'
     - name: Run buf push
       if: inputs.push == 'true'
       uses: bufbuild/buf-push-action@v1
