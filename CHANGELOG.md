@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/swarm-io/action-buf/compare/v1.0.3...v1.0.4) (2022-01-04)
+
+
+### Bug Fixes
+
+* Create repo on push ([#5](https://github.com/swarm-io/action-buf/issues/5)) ([305e8f7](https://github.com/swarm-io/action-buf/commit/305e8f7e694e15b53e0bfd427dcbac9c11f91f48))
+
 ## [1.0.3](https://github.com/swarm-io/action-buf/compare/v1.0.2...v1.0.3) (2022-01-04)
 
 
