@@ -1,6 +1,9 @@
 name: 'Action Buf'
 description: 'Runs buf commmands to lint and generate protos'
 inputs:
+  buf-user:
+    description: 'Buf user'
+    required: true
   buf-token:
     description: 'Buf token'
     required: true
@@ -79,6 +82,10 @@ runs:
       run: |
         go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
         go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+    - name: Sign into BSR
+      shell: bash
+      run: |
+        echo ${{ inputs.buf-token }} | buf registry login --username ${{ inputs.buf-user }} --token-stdin
     - name: Run buf lint
       if: inputs.lint == 'true'
       uses: bufbuild/buf-lint-action@v1
